@@ -11,6 +11,7 @@ import com.wangsun.custompicker.api.Picker
 import com.wangsun.custompicker.api.callbacks.FilePickerCallback
 import com.wangsun.custompicker.api.entity.ChosenFile
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.wangsun.custompicker.utils.MimeUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), FilePickerCallback {
@@ -38,9 +39,21 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
         initButton()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == Picker.PICK_FILE){
+            filePicker.submit(data)
+        }
+        else
+            super.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onFilesChosen(files: MutableList<ChosenFile>?) {
         files?.let {
             println("result: ${it}")
+
+            id_file_path.text = "Path: ${it[0].originalPath}"
+            id_mime_type.text = "MimeType: ${it[0].mimeType}"
+            id_file_size.text = "File Size(in Bytes): ${it[0].size}"
         }
     }
 
@@ -52,27 +65,70 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
     //********************Custom Function********************************
 
     private fun initButton() {
-        id_pick_file.setOnClickListener { getPermission() }
+        id_pick_file.setOnClickListener { getPermission(1) }
+        id_pick_pdf_file.setOnClickListener { getPermission(2) }
+        id_pick_audio.setOnClickListener { getPermission(3) }
+        id_pick_video.setOnClickListener { getPermission(4) }
+        id_pick_only_mp4.setOnClickListener { getPermission(5) }
+        id_pick_image.setOnClickListener {getPermission(6)  }
+        id_pick_only_jpg.setOnClickListener { getPermission(7) }
     }
 
+
+    /*By default:
+    * filetype take all
+    * mimeType take all
+    * allowMimeType is true*/
     private fun startFilePicker() {
-        filePicker.allowMultiple()
-            .setFilePickerCallback(this)
-            .setMimeTypes(mMimeTypes)
+        filePicker.setFilePickerCallback(this)
+            .pickFile()
+    }
+
+    private fun startOnlyPdfPicker() {
+        filePicker.setFilePickerCallback(this)
+            .setMimeTypes(arrayOf("application/pdf"))
+            .pickFile()
+    }
+
+    /*No need to set mimeType as it will override fileType(you may see videos while recent file list)*/
+    private fun startAudioPicker() {
+        filePicker.setFilePickerCallback(this)
+            .setFileType(MimeUtils.AUDIO_FILE_TYPE)
+            .setMimeTypes(arrayOf(MimeUtils.AUDIO_FILE_TYPE))
+            .pickFile()
+    }
+
+    private fun startVideoPicker() {
+        filePicker.setFilePickerCallback(this)
+            .setFileType(MimeUtils.VIDEO_FILE_TYPE)
+            .setMimeTypes(arrayOf(MimeUtils.VIDEO_FILE_TYPE))
+            .pickFile()
+    }
+
+    private fun startOnlyMp4Picker() {
+        filePicker.setFilePickerCallback(this)
+            .setMimeTypes(arrayOf("video/mp4"))
+            .pickFile()
+    }
+
+    private fun startImagePicker() {
+        filePicker.setFilePickerCallback(this)
+            .setFileType(MimeUtils.IMAGE_FILE_TYPE)
+            .setMimeTypes(arrayOf(MimeUtils.IMAGE_FILE_TYPE))
+            .pickFile()
+    }
+
+    private fun startOnlyJpgPicker() {
+        filePicker.setFilePickerCallback(this)
+            .setMimeTypes(arrayOf("image/jpeg"))
             .pickFile()
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == Picker.PICK_FILE){
-            filePicker.submit(data)
-        }
-        else
-            super.onActivityResult(requestCode, resultCode, data)
-    }
+
 
     @SuppressLint("CheckResult")
-    private fun getPermission() {
+    private fun getPermission(value: Int) {
         val rxPermissions = RxPermissions(this)
         rxPermissions
             .request(
@@ -82,10 +138,18 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
             .subscribe { granted ->
                 if (granted) {
                     // All requested permissions are granted
-                    startFilePicker()
+                    when(value){
+                        1-> startFilePicker()
+                        2-> startOnlyPdfPicker()
+                        3-> startAudioPicker()
+                        4-> startVideoPicker()
+                        5-> startOnlyMp4Picker()
+                        6-> startImagePicker()
+                        7-> startOnlyJpgPicker()
+                    }
                 } else {
                     // At least one permission is denied
-                    getPermission()
+                    getPermission(value)
                 }
             }
     }

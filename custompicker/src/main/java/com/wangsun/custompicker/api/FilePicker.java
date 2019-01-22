@@ -26,6 +26,7 @@ public class FilePicker extends PickerManager {
 
 
     private String mimeTypes[] = {"*/*"};
+    private String fileType = "*/*";
 
     /**
      * Constructor for choosing a file from an {@link Activity}
@@ -79,6 +80,12 @@ public class FilePicker extends PickerManager {
         return this;
     }
 
+    public FilePicker setFileType(String fileType){
+        this.fileType = fileType;
+        return this;
+    }
+
+
     /**
      * Triggers file selection
      */
@@ -98,15 +105,13 @@ public class FilePicker extends PickerManager {
         if (callback == null) {
             throw new PickerException("FilePickerCallback is null!!! Please set one");
         }
-        String action = Intent.ACTION_GET_CONTENT;
-        Intent intent = new Intent(action);
-        intent.setType("*/*");
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType(fileType);
         if (extras != null) {
             intent.putExtras(extras);
         }
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
         pickInternal(intent, pickerType);
         return null;
     }

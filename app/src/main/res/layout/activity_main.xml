@@ -9,19 +9,118 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/id_pick_file"
+    <TextView
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pick File"
-        android:layout_marginTop="20dp"/>
+        android:text="The library support multiple file selection too, but for demo we are only using single file."
+        android:textColor="@color/colorAccent"/>
 
 
-    <Button
-        android:id="@+id/id_pick_image"
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/id_file_path"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pick Image"
-        android:layout_marginTop="20dp"/>
+        android:text="Original Path:"
+        android:textSize="14sp"
+        android:padding="5dp"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/id_mime_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mime Type:"
+        android:padding="5dp"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/id_file_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Size:"
+        android:padding="5dp"
+        android:textSize="14sp"/>
+
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:baselineAligned="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="5dp">
+
+            <Button
+                android:id="@+id/id_pick_file"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pick File"
+                android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/id_pick_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pick Video"
+                android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/id_pick_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pick Image"
+                android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/id_pick_only_jpg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pick Only JPG Image"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="5dp">
+
+            <Button
+                android:id="@+id/id_pick_pdf_file"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pick PDF File"
+                android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/id_pick_only_mp4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pick Only Mp4 Video"
+                android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/id_pick_audio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pick Audio"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

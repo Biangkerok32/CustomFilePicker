@@ -41,4 +41,9 @@ public class MimeUtils {
             return "file";
         }
     }
+
+    /*File types: to set type for intent*/
+    public final static String VIDEO_FILE_TYPE = "video/*";
+    public final static String AUDIO_FILE_TYPE = "audio/*";
+    public final static String IMAGE_FILE_TYPE = "image/*";
 }
