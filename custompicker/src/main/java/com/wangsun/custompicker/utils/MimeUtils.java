@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.utils;
+package com.wangsun.custompicker.utils;
 
 import java.util.Arrays;
 import java.util.HashSet;

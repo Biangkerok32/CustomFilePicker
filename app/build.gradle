@@ -33,7 +33,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
     /*Module*/
-    implementation project(path: ':multipicker')
+    implementation project(path: ':custompicker')
 
     /*Permission*/
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'

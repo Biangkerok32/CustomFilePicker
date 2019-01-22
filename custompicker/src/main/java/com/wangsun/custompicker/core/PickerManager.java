@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.core;
+package com.wangsun.custompicker.core;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -13,11 +13,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
 import androidx.fragment.app.Fragment;
-import com.kbeanie.multipicker.api.CacheLocation;
-import com.kbeanie.multipicker.api.exceptions.PickerException;
-import com.kbeanie.multipicker.storage.StoragePreferences;
-import com.kbeanie.multipicker.utils.FileUtils;
-import com.kbeanie.multipicker.utils.LogUtils;
+import com.wangsun.custompicker.api.CacheLocation;
+import com.wangsun.custompicker.api.exceptions.PickerException;
+import com.wangsun.custompicker.storage.StoragePreferences;
+import com.wangsun.custompicker.utils.FileUtils;
+import com.wangsun.custompicker.utils.LogUtils;
 
 import java.io.File;
 import java.util.UUID;

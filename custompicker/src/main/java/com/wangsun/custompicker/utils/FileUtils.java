@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.utils;
+package com.wangsun.custompicker.utils;
 
 import android.Manifest;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import androidx.core.content.ContextCompat;
-import com.kbeanie.multipicker.api.exceptions.PickerException;
-import com.kbeanie.multipicker.storage.StoragePreferences;
+import com.wangsun.custompicker.api.exceptions.PickerException;
+import com.wangsun.custompicker.storage.StoragePreferences;
 
 import java.io.*;
 

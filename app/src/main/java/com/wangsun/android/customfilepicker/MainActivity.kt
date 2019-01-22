@@ -6,10 +6,10 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.kbeanie.multipicker.api.FilePicker
-import com.kbeanie.multipicker.api.Picker
-import com.kbeanie.multipicker.api.callbacks.FilePickerCallback
-import com.kbeanie.multipicker.api.entity.ChosenFile
+import com.wangsun.custompicker.api.FilePicker
+import com.wangsun.custompicker.api.Picker
+import com.wangsun.custompicker.api.callbacks.FilePickerCallback
+import com.wangsun.custompicker.api.entity.ChosenFile
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_main.*
 

@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.core.threads;
+package com.wangsun.custompicker.core.threads;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -13,13 +13,13 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
-import com.kbeanie.multipicker.api.CacheLocation;
-import com.kbeanie.multipicker.api.callbacks.FilePickerCallback;
-import com.kbeanie.multipicker.api.entity.ChosenFile;
-import com.kbeanie.multipicker.api.exceptions.PickerException;
-import com.kbeanie.multipicker.utils.FileUtils;
-import com.kbeanie.multipicker.utils.LogUtils;
-import com.kbeanie.multipicker.utils.MimeUtils;
+import com.wangsun.custompicker.api.CacheLocation;
+import com.wangsun.custompicker.api.callbacks.FilePickerCallback;
+import com.wangsun.custompicker.api.entity.ChosenFile;
+import com.wangsun.custompicker.api.exceptions.PickerException;
+import com.wangsun.custompicker.utils.FileUtils;
+import com.wangsun.custompicker.utils.LogUtils;
+import com.wangsun.custompicker.utils.MimeUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-import static com.kbeanie.multipicker.utils.StreamHelper.*;
+import static com.wangsun.custompicker.utils.StreamHelper.*;
 
 
 public class FileProcessorThread extends Thread {

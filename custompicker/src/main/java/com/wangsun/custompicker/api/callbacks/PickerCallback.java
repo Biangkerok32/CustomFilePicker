@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.api.callbacks;
+package com.wangsun.custompicker.api.callbacks;
 
 
 public interface PickerCallback {

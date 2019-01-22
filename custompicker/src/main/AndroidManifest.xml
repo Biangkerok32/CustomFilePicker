@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kbeanie.multipicker">
+    package="com.wangsun.custompicker">
 
     <application>
         <provider
-            android:name=".utils.AMPFileProvider"
+            android:name="com.wangsun.custompicker.utils.AMPFileProvider"
             android:authorities="${applicationId}.multipicker.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

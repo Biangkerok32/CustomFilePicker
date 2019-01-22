@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.api;
+package com.wangsun.custompicker.api;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -7,12 +7,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import androidx.fragment.app.Fragment;
-import com.kbeanie.multipicker.api.callbacks.FilePickerCallback;
-import com.kbeanie.multipicker.api.entity.ChosenFile;
-import com.kbeanie.multipicker.api.exceptions.PickerException;
-import com.kbeanie.multipicker.core.PickerManager;
-import com.kbeanie.multipicker.core.threads.FileProcessorThread;
-import com.kbeanie.multipicker.utils.LogUtils;
+import com.wangsun.custompicker.api.callbacks.FilePickerCallback;
+import com.wangsun.custompicker.api.entity.ChosenFile;
+import com.wangsun.custompicker.api.exceptions.PickerException;
+import com.wangsun.custompicker.core.PickerManager;
+import com.wangsun.custompicker.core.threads.FileProcessorThread;
+import com.wangsun.custompicker.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.utils;
+package com.wangsun.custompicker.utils;
 
 import androidx.core.content.FileProvider;
 

@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.api;
+package com.wangsun.custompicker.api;
 
 
 public interface Picker {

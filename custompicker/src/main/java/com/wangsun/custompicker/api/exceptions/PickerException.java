@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.api.exceptions;
+package com.wangsun.custompicker.api.exceptions;
 
 import android.content.ActivityNotFoundException;
 

@@ -1,8 +1,8 @@
-package com.kbeanie.multipicker.utils;
+package com.wangsun.custompicker.utils;
 
 import android.util.Log;
 
-import com.kbeanie.multipicker.core.PickerManager;
+import com.wangsun.custompicker.core.PickerManager;
 
 
 public class LogUtils {

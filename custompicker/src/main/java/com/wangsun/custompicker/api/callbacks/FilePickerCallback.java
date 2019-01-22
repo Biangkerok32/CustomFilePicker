@@ -1,6 +1,6 @@
-package com.kbeanie.multipicker.api.callbacks;
+package com.wangsun.custompicker.api.callbacks;
 
-import com.kbeanie.multipicker.api.entity.ChosenFile;
+import com.wangsun.custompicker.api.entity.ChosenFile;
 
 import java.util.List;
 

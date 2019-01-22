@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.api.entity;
+package com.wangsun.custompicker.api.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;

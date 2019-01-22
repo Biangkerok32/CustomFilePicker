@@ -1,4 +1,4 @@
-package com.kbeanie.multipicker.utils;
+package com.wangsun.custompicker.utils;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import com.kbeanie.multipicker.api.exceptions.PickerException;
+import com.wangsun.custompicker.api.exceptions.PickerException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
