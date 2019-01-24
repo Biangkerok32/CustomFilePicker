@@ -6,21 +6,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.OpenableColumns;
 import androidx.fragment.app.Fragment;
 import com.wangsun.custompicker.api.CacheLocation;
 import com.wangsun.custompicker.api.exceptions.PickerException;
 import com.wangsun.custompicker.storage.StoragePreferences;
-import com.wangsun.custompicker.utils.FileUtils;
 import com.wangsun.custompicker.utils.LogUtils;
-
-import java.io.File;
-import java.util.UUID;
 
 /**
  * Abstract class for all types of Pickers
@@ -64,36 +56,7 @@ public abstract class PickerManager {
         debugglable = new StoragePreferences(getContext()).isDebuggable();
     }
 
-    /**
-     * Set extras which will be directly passed to the target applications. You should use this
-     * to take advantage of specific applications
-     * ex. Some applications support cropping, or editing the image itself before they give you
-     * the final image
-     *
-     * @param extras
-     */
-    public void setExtras(Bundle extras) {
-        this.extras = extras;
-    }
 
-    /**
-     * Default cache location is {@link CacheLocation#EXTERNAL_STORAGE_APP_DIR}
-     * <p/>
-     * If you are setting the (@link CacheLocation#EXTERNAL_STORAGE_PUBLIC_DIR} make sure you have the required permissions
-     * available in the Manifest file. Else, a {@link RuntimeException} will be raised.
-     * <p/>
-     * Permissions required {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} and
-     * {@link android.Manifest.permission#READ_EXTERNAL_STORAGE}
-     *
-     * @param cacheLocation {@link CacheLocation}
-     */
-    public void setCacheLocation(int cacheLocation) {
-        this.cacheLocation = cacheLocation;
-
-        if (cacheLocation == CacheLocation.EXTERNAL_STORAGE_PUBLIC_DIR) {
-            checkIfPermissionsAvailable();
-        }
-    }
 
     /**
      * Since {@link CacheLocation#EXTERNAL_STORAGE_PUBLIC_DIR} is deprecated, you will have no
@@ -122,29 +85,7 @@ public abstract class PickerManager {
      */
     public abstract void submit(Intent data);
 
-    protected String buildFilePath(String extension, String type) throws PickerException {
-        String directoryPath = getDirectory(type);
-        return directoryPath + File.separator + UUID.randomUUID().toString() + "." + extension;
-    }
 
-    protected String getDirectory(String type) throws PickerException {
-        String directory = null;
-        switch (cacheLocation) {
-            case CacheLocation.EXTERNAL_STORAGE_PUBLIC_DIR:
-                directory = FileUtils.getExternalFilesDirectory(type, getContext());
-                break;
-            case CacheLocation.EXTERNAL_STORAGE_APP_DIR:
-                directory = FileUtils.getExternalFilesDir(type, getContext());
-                break;
-            case CacheLocation.EXTERNAL_CACHE_DIR:
-                directory = FileUtils.getExternalCacheDir(getContext());
-                break;
-            case CacheLocation.INTERNAL_APP_DIR:
-                directory = FileUtils.getInternalFileDirectory(getContext());
-                break;
-        }
-        return directory;
-    }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected Context getContext() {
@@ -174,74 +115,4 @@ public abstract class PickerManager {
         }
     }
 
-    protected boolean isClipDataApi() {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN);
-    }
-
-    public void setRequestId(int requestId) {
-        this.requestId = requestId;
-    }
-
-    private void checkIfPermissionsAvailable() {
-        boolean writePermissionInManifest = getContext().checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        LogUtils.d(TAG, "checkIfPermissionsAvailable: In Manifest(WRITE_EXTERNAL_STORAGE): " + writePermissionInManifest);
-        boolean readPermissionInManifest = getContext().checkCallingOrSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        LogUtils.d(TAG, "checkIfPermissionsAvailable: In Manifest(READ_EXTERNAL_STORAGE): " + readPermissionInManifest);
-
-        if (!writePermissionInManifest || !readPermissionInManifest) {
-            if (!writePermissionInManifest) {
-                LogUtils.e(TAG, Manifest.permission.WRITE_EXTERNAL_STORAGE + " permission is missing in manifest file");
-            }
-            if (!readPermissionInManifest) {
-                LogUtils.e(TAG, Manifest.permission.READ_EXTERNAL_STORAGE + " permission is missing in manifest file");
-            }
-            throw new RuntimeException("Permissions required in Manifest");
-        }
-    }
-
-    public static long querySizeOfFile(Uri uri, Context context) {
-        if (uri.toString().startsWith("file")) {
-            File file = new File(uri.getPath());
-            return file.length();
-        } else if (uri.toString().startsWith("content")) {
-            Cursor cursor = null;
-            try {
-                cursor = context.getContentResolver().query(uri, null, null, null, null);
-                if (cursor != null && cursor.moveToFirst()) {
-                    return cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
-                } else {
-                    return 0;
-                }
-            } catch (Exception e) {
-                return 0;
-            } finally {
-                cursor.close();
-            }
-        }
-        return 0;
-    }
-
-
-    protected String getNewFileLocation(String extension, String type) throws PickerException {
-        File file;
-        String filePathName = "";
-        if (type.equals(Environment.DIRECTORY_MOVIES)) {
-            filePathName = "movies";
-        } else if (type.equals(Environment.DIRECTORY_PICTURES)) {
-            filePathName = "pictures";
-        }
-        file = new File(getContext().getFilesDir(), filePathName);
-        file.mkdirs();
-
-        file = new File(file.getAbsolutePath() + File.separator + UUID.randomUUID().toString() + "." + extension);
-        return file.getAbsolutePath();
-    }
-
-    protected String getFileProviderAuthority(){
-        return getContext().getPackageName()+".multipicker.fileprovider";
-    }
-
-    public void setDebugglable(boolean debugglable){
-        new StoragePreferences(getContext()).setDebuggable(debugglable);
-    }
 }

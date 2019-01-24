@@ -5,6 +5,7 @@ import com.wangsun.custompicker.api.entity.ChosenFile;
 import java.util.List;
 
 
-public interface FilePickerCallback extends PickerCallback {
+public interface FilePickerCallback{
     void onFilesChosen(List<ChosenFile> files);
+    void onError(String message);
 }

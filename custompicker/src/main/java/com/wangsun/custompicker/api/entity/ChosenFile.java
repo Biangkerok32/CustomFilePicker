@@ -15,18 +15,12 @@ public class ChosenFile implements Parcelable {
      * Processed path to file. This should always be a local path on the device.
      */
     private String originalPath;
-    /**
-     * Mime Type of the processed file
-     */
-    private String mimeType;
+
     /**
      * Size of the file in bytes
      */
     private long size;
-    /**
-     * Extension of the file. It may be blank.
-     */
-    private String extension;
+
     private Date createdAt;
     /**
      * Type of the file (image, video, file, audio etc).
@@ -38,10 +32,8 @@ public class ChosenFile implements Parcelable {
      */
 
     private int requestId;
-
     private String displayName;
     private boolean success;
-
     private String tempFile = "";
 
     public ChosenFile() {
@@ -52,9 +44,7 @@ public class ChosenFile implements Parcelable {
         id = in.readLong();
         queryUri = in.readString();
         originalPath = in.readString();
-        mimeType = in.readString();
         size = in.readLong();
-        extension = in.readString();
         createdAt = new Date(in.readLong());
         type = in.readString();
         displayName = in.readString();
@@ -69,9 +59,7 @@ public class ChosenFile implements Parcelable {
         dest.writeLong(id);
         dest.writeString(queryUri);
         dest.writeString(originalPath);
-        dest.writeString(mimeType);
         dest.writeLong(size);
-        dest.writeString(extension);
         dest.writeLong(createdAt.getTime());
         dest.writeString(type);
         dest.writeString(displayName);
@@ -168,18 +156,6 @@ public class ChosenFile implements Parcelable {
         this.originalPath = originalPath;
     }
 
-    /**
-     * Get mimetype of the file
-     *
-     * @return
-     */
-    public String getMimeType() {
-        return mimeType;
-    }
-
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
-    }
 
     /**
      * Get the size of the processed file in bytes
@@ -192,14 +168,6 @@ public class ChosenFile implements Parcelable {
 
     public void setSize(long size) {
         this.size = size;
-    }
-
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
     }
 
     public Date getCreatedAt() {
@@ -223,39 +191,13 @@ public class ChosenFile implements Parcelable {
         this.type = type;
     }
 
-    /**
-     * Get the extension of the file
-     * Ex. .pdf, .jpeg, .mp4
-     *
-     * @return
-     */
-    public String getFileExtensionFromMimeType() {
-        String extension = "";
-        if (mimeType != null) {
-            String[] parts = mimeType.split("/");
-            if (parts.length >= 2) {
-                if (!parts[1].equals("*")) {
-                    extension = "." + parts[1];
-                }
-            }
-        }
-        return extension;
-    }
 
-    /**
-     * Get only the file extension (Ex. jpg, mp4, pdf etc)
-     *
-     * @return
-     */
-    public String getFileExtensionFromMimeTypeWithoutDot() {
-        return getFileExtensionFromMimeType().replace(".", "");
-    }
 
-    private final static String STRING_FORMAT = "Type: %s, QueryUri: %s, Original Path: %s, MimeType: %s, Size: %s";
+    private final static String STRING_FORMAT = "Type: %s, QueryUri: %s, Original Path: %s, Size: %s";
 
     @Override
     public String toString() {
-        return String.format(STRING_FORMAT, type, queryUri, originalPath, mimeType, getHumanReadableSize(false));
+        return String.format(STRING_FORMAT, type, queryUri, originalPath, getHumanReadableSize(false));
     }
 
     /**
@@ -320,7 +262,7 @@ public class ChosenFile implements Parcelable {
     }
 
     private String getIdString(ChosenFile file){
-        String id = queryUri + ":" + originalPath + ":" + mimeType + ":" +size;
+        String id = queryUri + ":" + originalPath + ":" +size;
         return id;
     }
 }

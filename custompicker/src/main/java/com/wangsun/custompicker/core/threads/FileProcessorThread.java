@@ -7,24 +7,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.text.TextUtils;
-import android.webkit.MimeTypeMap;
 import com.wangsun.custompicker.api.CacheLocation;
 import com.wangsun.custompicker.api.callbacks.FilePickerCallback;
 import com.wangsun.custompicker.api.entity.ChosenFile;
 import com.wangsun.custompicker.api.exceptions.PickerException;
 import com.wangsun.custompicker.utils.FileUtils;
 import com.wangsun.custompicker.utils.LogUtils;
-import com.wangsun.custompicker.utils.MimeUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -33,8 +28,6 @@ import static com.wangsun.custompicker.utils.StreamHelper.*;
 
 
 public class FileProcessorThread extends Thread {
-    protected final static int THUMBNAIL_BIG = 1;
-    protected final static int THUMBNAIL_SMALL = 2;
     private final static String TAG = FileProcessorThread.class.getSimpleName();
     private final int cacheLocation;
     private final Context context;
@@ -76,7 +69,7 @@ public class FileProcessorThread extends Thread {
         }
     }
 
-    protected void processFiles() {
+    private void processFiles() {
         for (ChosenFile file : files) {
             try {
                 file.setRequestId(requestId);
@@ -92,49 +85,14 @@ public class FileProcessorThread extends Thread {
         }
     }
 
-    protected void postProcessFiles() {
-        for (ChosenFile file : files) {
-            try {
-                postProcess(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     private void postProcess(ChosenFile file) throws PickerException {
         file.setCreatedAt(Calendar.getInstance().getTime());
         File f = new File(file.getOriginalPath());
         file.setSize(f.length());
-        copyFileToFolder(file);
+        //copyFileToFolder(file);
     }
 
-    private void copyFileToFolder(ChosenFile file) throws PickerException {
-        LogUtils.d(TAG, "copyFileToFolder: folder: " + file.getDirectoryType());
-        LogUtils.d(TAG, "copyFileToFolder: extension: " + file.getExtension());
-        LogUtils.d(TAG, "copyFileToFolder: mimeType: " + file.getMimeType());
-        LogUtils.d(TAG, "copyFileToFolder: type: " + file.getType());
-        if (file.getType().equals("image")) {
-            file.setDirectoryType(Environment.DIRECTORY_PICTURES);
-        } else if (file.getType().equals("video")) {
-            file.setDirectoryType(Environment.DIRECTORY_MOVIES);
-        }
-        String outputPath = getTargetLocationToCopy(file);
-        LogUtils.d(TAG, "copyFileToFolder: Out Path: " + outputPath);
-        // Check if file is already in the required destination
-        if (outputPath.equals(file.getOriginalPath())) {
-            return;
-        }
-        try {
-            File inputFile = new File(file.getOriginalPath());
-            File copyTo = new File(outputPath);
-            FileUtils.copyFile(inputFile, copyTo);
-            file.setOriginalPath(copyTo.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new PickerException(e);
-        }
-    }
 
     private void processFile(ChosenFile file) throws PickerException {
         String uri = file.getQueryUri();
@@ -142,7 +100,6 @@ public class FileProcessorThread extends Thread {
         if (uri.startsWith("file://") || uri.startsWith("/")) {
             file = sanitizeUri(file);
             file.setDisplayName(Uri.parse(file.getOriginalPath()).getLastPathSegment());
-            file.setMimeType(guessMimeTypeFromUrl(file.getOriginalPath(), file.getType()));
         } else if (uri.startsWith("http")) {
             file = downloadAndSaveFile(file);
         } else if (uri.startsWith("content:")) {
@@ -187,7 +144,6 @@ public class FileProcessorThread extends Thread {
                     .openInputStream(Uri.parse(file.getOriginalPath()));
 
             bStream = new BufferedInputStream(inputStream);
-            String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
 
             verifyStream(file.getOriginalPath(), bStream);
 
@@ -200,13 +156,6 @@ public class FileProcessorThread extends Thread {
                 outStream.write(buf, 0, len);
             }
             file.setOriginalPath(localFilePath);
-            if (file.getMimeType() != null && file.getMimeType().contains("/*")) {
-                if (mimeType != null && !mimeType.isEmpty()) {
-                    file.setMimeType(mimeType);
-                } else {
-                    file.setMimeType(guessMimeTypeFromUrl(file.getOriginalPath(), file.getType()));
-                }
-            }
         } catch (IOException e) {
             throw new PickerException(e);
         } finally {
@@ -234,7 +183,6 @@ public class FileProcessorThread extends Thread {
                     .getFileDescriptor();
 
             inputStream = new BufferedInputStream(new FileInputStream(fileDescriptor));
-            String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
             BufferedInputStream reader = new BufferedInputStream(inputStream);
 
             outStream = new BufferedOutputStream(
@@ -246,13 +194,6 @@ public class FileProcessorThread extends Thread {
             }
             flush(outStream);
             file.setOriginalPath(localFilePath);
-            if (file.getMimeType() != null && file.getMimeType().contains("/*")) {
-                if (mimeType != null && !mimeType.isEmpty()) {
-                    file.setMimeType(mimeType);
-                } else {
-                    file.setMimeType(guessMimeTypeFromUrl(file.getOriginalPath(), file.getType()));
-                }
-            }
         } catch (IOException e) {
             throw new PickerException(e);
         } catch (Exception e) {
@@ -309,10 +250,6 @@ public class FileProcessorThread extends Thread {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                String mimeType = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE));
-                if (mimeType != null) {
-                    file.setMimeType(mimeType);
-                }
                 cursor.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -325,9 +262,6 @@ public class FileProcessorThread extends Thread {
                 String[] data = getPathAndMimeType(file);
                 if (data[0] != null) {
                     file.setOriginalPath(data[0]);
-                }
-                if (data[1] != null) {
-                    file.setMimeType(data[1]);
                 }
             }
         }
@@ -388,10 +322,8 @@ public class FileProcessorThread extends Thread {
         // File
         else if ("file".equalsIgnoreCase(uri.getScheme())) {
             String path = uri.getPath();
-            String mimeType = guessMimeTypeFromUrl(path, file.getType());
             String[] data = new String[2];
             data[0] = path;
-            data[1] = mimeType;
             return data;
         }
 
@@ -410,7 +342,6 @@ public class FileProcessorThread extends Thread {
             if (cursor != null && cursor.moveToFirst()) {
                 String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA));
                 data[0] = path;
-                data[1] = guessMimeTypeFromUrl(path, type);
                 return data;
             }
         } catch (Exception e) {
@@ -442,22 +373,6 @@ public class FileProcessorThread extends Thread {
             HttpURLConnection urlConnection = (HttpURLConnection) u.openConnection();
             InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
             BufferedInputStream bStream = new BufferedInputStream(stream);
-
-            String mimeType = guessMimeTypeFromUrl(file.getQueryUri(), file.getType());
-            if (mimeType == null) {
-                mimeType = URLConnection.guessContentTypeFromStream(stream);
-            }
-
-            if (mimeType == null && file.getQueryUri().contains(".")) {
-                int index = file.getQueryUri().lastIndexOf(".");
-                mimeType = file.getType() + "/" + file.getQueryUri().substring(index + 1);
-            }
-
-            if (mimeType == null) {
-                mimeType = file.getType() + "/*";
-            }
-
-            file.setMimeType(mimeType);
 
             localFilePath = generateFileName(file);
 
@@ -503,72 +418,12 @@ public class FileProcessorThread extends Thread {
         return directory;
     }
 
-    // Guess File extension from the file name
-    private String guessExtensionFromUrl(String url) {
-        try {
-            return MimeTypeMap.getFileExtensionFromUrl(url);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    // Guess Mime Type from the file extension
-    private String guessMimeTypeFromUrl(String url, String type) {
-        String mimeType;
-        String extension = guessExtensionFromUrl(url);
-        if (extension == null || extension.isEmpty()) {
-            if (url.contains(".")) {
-                int index = url.lastIndexOf(".");
-                extension = url.substring(index + 1);
-            } else {
-                extension = "*";
-            }
-        }
-        if (type.equals("file")) {
-            mimeType = MimeUtils.guessMimeTypeFromExtension(extension);
-        } else {
-            mimeType = type + "/" + extension;
-        }
-        return mimeType;
-    }
-
-    private String getTargetLocationToCopy(ChosenFile file) throws PickerException {
-        String fileName = file.getDisplayName();
-        if (fileName == null || fileName.isEmpty()) {
-            fileName = UUID.randomUUID().toString();
-        }
-        // If File name already contains an extension, we don't need to guess the extension
-        if (!fileName.contains(".")) {
-            String extension = file.getFileExtensionFromMimeType();
-            if (extension != null && !extension.isEmpty()) {
-                fileName += extension;
-                file.setExtension(extension);
-            }
-        }
-
-        String probableFileName = fileName;
-        File probableFile = new File(getTargetDirectory(file.getDirectoryType()) + File.separator
-                + probableFileName);
-        return probableFile.getAbsolutePath();
-    }
-
     private String generateFileName(ChosenFile file) throws PickerException {
         String fileName = file.getDisplayName();
         if (fileName == null || fileName.isEmpty()) {
             fileName = UUID.randomUUID().toString();
         }
         // If File name already contains an extension, we don't need to guess the extension
-        if (!fileName.contains(".")) {
-            String extension = file.getFileExtensionFromMimeType();
-            if (extension != null && !extension.isEmpty()) {
-                fileName += extension;
-                file.setExtension(extension);
-            }
-        }
-
-        if (TextUtils.isEmpty(file.getMimeType())) {
-            file.setMimeType(guessMimeTypeFromUrl(file.getOriginalPath(), file.getType()));
-        }
 
         String probableFileName = fileName;
         File probableFile = new File(getTargetDirectory(file.getDirectoryType()) + File.separator

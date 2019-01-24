@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.wangsun.custompicker.api.FilePicker
@@ -49,10 +50,10 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
 
     override fun onFilesChosen(files: MutableList<ChosenFile>?) {
         files?.let {
-            println("result: ${it}")
+            println("result: ${it[0]}")
 
             id_file_path.text = "Path: ${it[0].originalPath}"
-            id_mime_type.text = "MimeType: ${it[0].mimeType}"
+            id_mime_type.text = "MimeType from Uri: ${contentResolver.getType(Uri.parse(it[0].queryUri))}"
             id_file_size.text = "File Size(in Bytes): ${it[0].size}"
         }
     }
@@ -81,6 +82,7 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
     * allowMimeType is true*/
     private fun startFilePicker() {
         filePicker.setFilePickerCallback(this)
+            .setMimeTypes(mMimeTypes)
             .pickFile()
     }
 
@@ -107,6 +109,7 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
 
     private fun startOnlyMp4Picker() {
         filePicker.setFilePickerCallback(this)
+            .setFileType(MimeUtils.VIDEO_FILE_TYPE)
             .setMimeTypes(arrayOf("video/mp4"))
             .pickFile()
     }
@@ -120,6 +123,7 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
 
     private fun startOnlyJpgPicker() {
         filePicker.setFilePickerCallback(this)
+            //.setFileType(MimeUtils.IMAGE_FILE_TYPE)
             .setMimeTypes(arrayOf("image/jpeg"))
             .pickFile()
     }
