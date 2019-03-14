@@ -4,8 +4,6 @@
 
 A FilePicker library for Android for selecting multiple files.
 
-[Sample Apk](https://github.com/jaiselrahman/FilePicker/releases/download/1.2.0/app-release.apk)
-
 
 ## Usage
 
