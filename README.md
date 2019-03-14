@@ -61,3 +61,27 @@ Step 3: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
             super.onActivityResult(requestCode, resultCode, data);
     }
 ```
+
+## Note:
+In rare case u may get inavlid files(files which do not exist but contain uri). To ensure valid files u can use conditions in ```onFilesChosen```
+
+```java
+public void onFilesChosen(List<ChosenFile> files) {
+                List<ChosenFile> finalFiles = new ArrayList<>();
+                if(!files.isEmpty()){
+                    for(int i=0; i<files.size();i++){
+                        if(files.get(i).isSuccess() && files.get(i).getSize()!=0){
+                            finalFiles.add(files.get(i));
+                        }
+                    }
+                }
+                /**
+                 * finalFiles contains valid files:
+                 *
+                 * finalFiles.get(i).getOriginalPath()
+                 * finalFiles.get(i).getSize()
+                 * finalFiles.get(i).getDisplayName()
+                 * finalFiles.get(i).getQueryUri()
+                 */
+            }
+```
