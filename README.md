@@ -47,7 +47,7 @@ Step 3: Declare and Initialize filePicker in Activity or Fragment.
                 .pickFile();
 ```
 
-Step 3: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
+Step 4: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
 
 ```java
     @Override
