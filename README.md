@@ -67,6 +67,7 @@ Step 3: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
 
 ```java
 public void onFilesChosen(List<ChosenFile> files) {
+                //filter files
                 List<ChosenFile> finalFiles = new ArrayList<>();
                 if(!files.isEmpty()){
                     for(int i=0; i<files.size();i++){
