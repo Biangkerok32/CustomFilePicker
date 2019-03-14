@@ -63,7 +63,7 @@ Step 3: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
 ```
 
 ## Note:
-In rare case u may get inavlid files(files which do not exist but contain uri). To ensure valid files u can use conditions in ```onFilesChosen```
+In rare case u may get inavlid files(files which do not exist but contain uri). To ensureti get valid files u can use conditions in ```onFilesChosen```. It is end-developer responsibility, how they want to handle such cases.
 
 ```java
 public void onFilesChosen(List<ChosenFile> files) {
