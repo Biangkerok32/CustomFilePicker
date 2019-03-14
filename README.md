@@ -49,7 +49,7 @@ Step 3: Declare and Initialize filepicker in Activity or Fragment.
                 .pickFile();
 ```
 
-Step 3: Send the received-data using ```onActivityResult(...)```.
+Step 3: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
 
 ```java
     @Override
