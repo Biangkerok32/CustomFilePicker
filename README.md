@@ -23,7 +23,7 @@ Step 2: Add the dependency
 ```gradle
     dependencies {
         ...
-        implementation 'com.github.wangsun6:CustomFilePicker:1.0.4'
+        implementation 'com.github.wangsun6:CustomFilePicker:1.0.5'
     }
 ```
 
