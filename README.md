@@ -91,3 +91,70 @@ public void onFilesChosen(List<ChosenFile> files) {
 
 The function should be called when u finished your job.
 eg. Lets say you want to use FilePicker for uploading files(any file). So after uploading is finished, to avoid duplicate files delete the duplicate files calling ```FileUtils.deleteDirectory()```
+
+## More examples:
+
+```Java
+
+    /************************************
+     *  Pick particular type of file
+     *************************************/
+    void pickImage() {
+        filePicker.setFilePickerCallback(this)
+                .setFileType(MimeUtils.FileType.IMAGE)
+                .setMimeTypes(MimeUtils.MimeType.IMAGE)
+                .pickFile();
+    }
+
+    void pickAudio() {
+        filePicker.setFilePickerCallback(this)
+                .setFileType(MimeUtils.FileType.AUDIO)
+                .setMimeTypes(MimeUtils.MimeType.AUDIO)
+                .pickFile();
+    }
+
+    void pickVideo() {
+        filePicker.setFilePickerCallback(this)
+                .setFileType(MimeUtils.FileType.VIDEO)
+                .setMimeTypes(MimeUtils.MimeType.VIDEO)
+                .pickFile();
+    }
+
+    void pickDocs() {
+        filePicker.setFilePickerCallback(this)
+                .setFileType(MimeUtils.FileType.DOC)
+                .setMimeTypes(MimeUtils.MimeType.DOC)
+                .pickFile();
+    }
+
+    /*****************************************
+     *    Pick more specific type of file
+     *****************************************/
+
+    void pickPdfOnly() {
+        filePicker.setFilePickerCallback(this)
+                .setFileType(MimeUtils.FileType.DOC)
+                .setMimeTypes(MimeUtils.MimeType.ONLY_PDF)
+                .pickFile();
+    }
+    
+    void pickMp4Only() {
+        filePicker.setFilePickerCallback(this)
+                .setFileType(MimeUtils.FileType.AUDIO)
+                .setMimeTypes(MimeUtils.MimeType.ONLY_MP4)
+                .pickFile();
+    }
+    
+    void pickJpgOnly() {
+        filePicker.setFilePickerCallback(this)
+                .setFileType(MimeUtils.FileType.IMAGE)
+                .setMimeTypes(MimeUtils.MimeType.ONLY_JPEG)
+                .pickFile();
+    }
+    
+```
+
+### setFileType() filter the applications for picking files while .setMimeTypes() files the actial files
+
+
+
