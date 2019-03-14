@@ -1,18 +1,15 @@
 package com.wangsun.custompicker.core;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import com.wangsun.custompicker.api.CacheLocation;
 import com.wangsun.custompicker.api.exceptions.PickerException;
 import com.wangsun.custompicker.storage.StoragePreferences;
-import com.wangsun.custompicker.utils.LogUtils;
 
 /**
  * Abstract class for all types of Pickers
@@ -32,7 +29,7 @@ public abstract class PickerManager {
 
     protected Bundle extras;
 
-    protected boolean allowMultiple;
+    protected boolean allowMultiple = false;
 
     public PickerManager(Activity activity, int pickerType) {
         this.activity = activity;

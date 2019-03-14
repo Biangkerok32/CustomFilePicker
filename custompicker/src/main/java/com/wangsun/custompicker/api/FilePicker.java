@@ -28,6 +28,7 @@ public class FilePicker extends PickerManager {
     private String mimeTypes[] = {"*/*"};
     private String fileType = "*/*";
 
+
     /**
      * Constructor for choosing a file from an {@link Activity}
      * @param activity
@@ -55,8 +56,9 @@ public class FilePicker extends PickerManager {
     /**
      * Allow multiple files to be chosen. Default is false. This will only work for applications that support multiple file selection. Else, you will get only one result.
      */
-    public FilePicker allowMultiple() {
-        this.allowMultiple = true;
+
+    public FilePicker allowMultipleFiles(boolean value) {
+        this.allowMultiple = value;
         return this;
     }
 
@@ -154,7 +156,6 @@ public class FilePicker extends PickerManager {
                     uris.add(paths.get(i).toString());
                 }
             }
-
             processFiles(uris);
         }
     }

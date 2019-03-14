@@ -66,7 +66,7 @@
                 android:id="@+id/id_pick_file"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pick File"
+                android:text="Pick Docs"
                 android:textSize="14sp"
                 android:layout_marginTop="10dp"/>
 
@@ -124,6 +124,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pick Only JPG"
+                android:textSize="14sp"
+                android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/id_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete Dir"
                 android:textSize="14sp"
                 android:layout_marginTop="10dp"/>
 

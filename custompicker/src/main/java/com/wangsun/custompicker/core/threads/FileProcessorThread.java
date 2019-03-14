@@ -20,6 +20,7 @@ import com.wangsun.custompicker.utils.LogUtils;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -39,6 +40,7 @@ public class FileProcessorThread extends Thread {
     public FileProcessorThread(Context context, List<ChosenFile> files, int cacheLocation) {
         this.context = context;
         this.files = files;
+        this.files.size();
         this.cacheLocation = cacheLocation;
     }
 
@@ -61,6 +63,16 @@ public class FileProcessorThread extends Thread {
                     @Override
                     public void run() {
                         callback.onFilesChosen(files); //(List<ChosenFile>)
+//                        List<ChosenFile> tempFile = new ArrayList<>();
+//                        for(int i=0;i<files.size();i++){
+//                            if(files.get(i).isSuccess() && files.get(i).getSize()!=0){
+//                                tempFile.add(files.get(i));
+//                            }
+//                        }
+//                        if(!files.isEmpty()){
+//                            files = tempFile;
+//                            callback.onFilesChosen(files); //(List<ChosenFile>)
+//                        }
                     }
                 });
             }
@@ -174,19 +186,15 @@ public class FileProcessorThread extends Thread {
         ParcelFileDescriptor parcelFileDescriptor = null;
         try {
             String localFilePath = generateFileName(file);
-            parcelFileDescriptor = context
-                    .getContentResolver().openFileDescriptor(Uri.parse(file.getOriginalPath()),
-                            "r");
+            parcelFileDescriptor = context.getContentResolver().openFileDescriptor(Uri.parse(file.getOriginalPath()), "r");
             verifyStream(file.getOriginalPath(), parcelFileDescriptor);
 
-            FileDescriptor fileDescriptor = parcelFileDescriptor
-                    .getFileDescriptor();
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
 
             inputStream = new BufferedInputStream(new FileInputStream(fileDescriptor));
             BufferedInputStream reader = new BufferedInputStream(inputStream);
 
-            outStream = new BufferedOutputStream(
-                    new FileOutputStream(localFilePath));
+            outStream = new BufferedOutputStream(new FileOutputStream(localFilePath));
             byte[] buf = new byte[2048];
             int len;
             while ((len = reader.read(buf)) > 0) {
@@ -196,7 +204,7 @@ public class FileProcessorThread extends Thread {
             file.setOriginalPath(localFilePath);
         } catch (IOException e) {
             throw new PickerException(e);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new PickerException(e.getLocalizedMessage());
         } finally {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -209,8 +217,8 @@ public class FileProcessorThread extends Thread {
         return file;
     }
 
-    // Try to get a local copy if available
 
+    // Try to get a local copy if available
     private ChosenFile getAbsolutePathIfAvailable(ChosenFile file) {
         String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME, MediaStore.MediaColumns.MIME_TYPE};
 
@@ -444,8 +452,7 @@ public class FileProcessorThread extends Thread {
 
         file.setDisplayName(fileName);
 
-        return getTargetDirectory(file.getDirectoryType()) + File.separator
-                + fileName;
+        return getTargetDirectory(file.getDirectoryType()) + File.separator + fileName;
     }
 
 

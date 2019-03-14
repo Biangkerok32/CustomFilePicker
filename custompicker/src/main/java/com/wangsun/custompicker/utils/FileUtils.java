@@ -26,17 +26,20 @@ public class FileUtils {
             }
         }
         File directory = Environment.getExternalStorageDirectory();
-        String appName = getAppName(context);
-        String appDirectory = directory.getAbsolutePath() + File.separator + appName;
-        File fileAppDirectory = new File(appDirectory);
-        if (!fileAppDirectory.exists()) {
-            fileAppDirectory.mkdir();
-        }
-        String appTypeDirectory = fileAppDirectory.getAbsolutePath() + File.separator + appName + " " + type;
-        File finalDirectory = new File(appTypeDirectory);
-        if (!finalDirectory.exists()) {
+//        String appName = getAppName(context);
+//        String appDirectory = directory.getAbsolutePath() + File.separator + appName;
+//        File fileAppDirectory = new File(appDirectory);
+//        if (!fileAppDirectory.exists()) {
+//            fileAppDirectory.mkdir();
+//        }
+//        String appTypeDirectory = fileAppDirectory.getAbsolutePath() + File.separator + appName + " " + type;
+//        File finalDirectory = new File(appTypeDirectory);
+//        if (!finalDirectory.exists()) {
+//            finalDirectory.mkdir();
+//        }
+        File finalDirectory = new File(directory+ "/CustomFilePicker/DuplicateFiles");
+        if(!finalDirectory.exists())
             finalDirectory.mkdir();
-        }
         if (finalDirectory == null) {
             throw new PickerException("Couldn't initialize External Storage Path");
         }
@@ -95,7 +98,18 @@ public class FileUtils {
         return directory.getAbsolutePath();
     }
 
-
+    public static void deleteDirectory() {
+        File dir = new File(Environment.getExternalStorageDirectory()+"/CustomFilePicker/DuplicateFiles");
+        if(dir.exists()){
+            if (dir.isDirectory()) {
+                String[] children = dir.list();
+                for (String aChildren : children) {
+                    new File(dir, aChildren).delete();
+                }
+            }
+            dir.delete();
+        }
+    }
 
     public static String getInternalFileDirectory(Context context) {
         return context.getFilesDir().getAbsolutePath();

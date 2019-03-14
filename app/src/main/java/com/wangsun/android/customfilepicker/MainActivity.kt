@@ -5,30 +5,18 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wangsun.custompicker.api.FilePicker
 import com.wangsun.custompicker.api.Picker
 import com.wangsun.custompicker.api.callbacks.FilePickerCallback
 import com.wangsun.custompicker.api.entity.ChosenFile
-import com.tbruyelle.rxpermissions2.RxPermissions
+import com.wangsun.custompicker.utils.FileUtils
 import com.wangsun.custompicker.utils.MimeUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), FilePickerCallback {
-
-    val mMimeTypes = arrayOf(
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
-        "application/vnd.ms-powerpoint",
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
-        "application/vnd.ms-excel",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
-        "text/plain",
-        "application/pdf",
-        "application/zip"
-    )
-
 
     lateinit var filePicker: FilePicker
 
@@ -50,11 +38,17 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
 
     override fun onFilesChosen(files: MutableList<ChosenFile>?) {
         files?.let {
-            println("result: ${it[0]}")
+            //println("result: ${it[0]}")
 
-            id_file_path.text = "Path: ${it[0].originalPath}"
-            id_mime_type.text = "MimeType from Uri: ${contentResolver.getType(Uri.parse(it[0].queryUri))}"
-            id_file_size.text = "File Size(in Bytes): ${it[0].size}"
+            if(files.isNotEmpty()){
+                println("success: ${it[0].isSuccess}")
+
+                id_file_path.text = "Path: ${it[0].originalPath}"
+                id_mime_type.text = "MimeType from Uri: ${contentResolver.getType(Uri.parse(it[0].queryUri))}"
+                id_file_size.text = "File Size(in Bytes): ${it[0].size}"
+            }
+
+
         }
     }
 
@@ -62,8 +56,6 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
         println("error: $message")
     }
 
-
-    //********************Custom Function********************************
 
     private fun initButton() {
         id_pick_file.setOnClickListener { getPermission(1) }
@@ -73,6 +65,10 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
         id_pick_only_mp4.setOnClickListener { getPermission(5) }
         id_pick_image.setOnClickListener {getPermission(6)  }
         id_pick_only_jpg.setOnClickListener { getPermission(7) }
+
+        id_delete.setOnClickListener {
+            FileUtils.deleteDirectory()
+        }
     }
 
 
@@ -80,55 +76,55 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
     * filetype take all
     * mimeType take all
     * allowMimeType is true*/
-    private fun startFilePicker() {
+    private fun startDocPicker() {
         filePicker.setFilePickerCallback(this)
-            .setMimeTypes(mMimeTypes)
+            .setFileType(MimeUtils.FileType.DOC)
+            .setMimeTypes(MimeUtils.MimeType.DOC)
             .pickFile()
     }
 
     private fun startOnlyPdfPicker() {
         filePicker.setFilePickerCallback(this)
-            .setMimeTypes(arrayOf("application/pdf"))
+            .setFileType(MimeUtils.FileType.DOC)
+            .setMimeTypes(MimeUtils.MimeType.ONLY_PDF)
             .pickFile()
     }
 
-    /*No need to set mimeType as it will override fileType(you may see videos while recent file list)*/
+    //AUDIO
     private fun startAudioPicker() {
         filePicker.setFilePickerCallback(this)
-            .setFileType(MimeUtils.AUDIO_FILE_TYPE)
-            .setMimeTypes(arrayOf(MimeUtils.AUDIO_FILE_TYPE))
+            .setFileType(MimeUtils.FileType.AUDIO)
+            .setMimeTypes(MimeUtils.MimeType.AUDIO)
             .pickFile()
     }
 
     private fun startVideoPicker() {
         filePicker.setFilePickerCallback(this)
-            .setFileType(MimeUtils.VIDEO_FILE_TYPE)
-            .setMimeTypes(arrayOf(MimeUtils.VIDEO_FILE_TYPE))
+            .setFileType(MimeUtils.FileType.VIDEO)
+            .setMimeTypes(MimeUtils.MimeType.VIDEO)
             .pickFile()
     }
 
     private fun startOnlyMp4Picker() {
         filePicker.setFilePickerCallback(this)
-            .setFileType(MimeUtils.VIDEO_FILE_TYPE)
-            .setMimeTypes(arrayOf("video/mp4"))
+            .setFileType(MimeUtils.FileType.AUDIO)
+            .setMimeTypes(MimeUtils.MimeType.ONLY_MP4)
             .pickFile()
     }
 
     private fun startImagePicker() {
         filePicker.setFilePickerCallback(this)
-            .setFileType(MimeUtils.IMAGE_FILE_TYPE)
-            .setMimeTypes(arrayOf(MimeUtils.IMAGE_FILE_TYPE))
+            .setFileType(MimeUtils.FileType.IMAGE)
+            .setMimeTypes(MimeUtils.MimeType.IMAGE)
             .pickFile()
     }
 
     private fun startOnlyJpgPicker() {
         filePicker.setFilePickerCallback(this)
-            //.setFileType(MimeUtils.IMAGE_FILE_TYPE)
-            .setMimeTypes(arrayOf("image/jpeg"))
+            .setFileType(MimeUtils.FileType.IMAGE)
+            .setMimeTypes(MimeUtils.MimeType.ONLY_JPEG)
             .pickFile()
     }
-
-
 
 
     @SuppressLint("CheckResult")
@@ -143,7 +139,7 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
                 if (granted) {
                     // All requested permissions are granted
                     when(value){
-                        1-> startFilePicker()
+                        1-> startDocPicker()
                         2-> startOnlyPdfPicker()
                         3-> startAudioPicker()
                         4-> startVideoPicker()
