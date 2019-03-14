@@ -154,7 +154,7 @@ eg. Lets say you want to use FilePicker for uploading files(any file). So after 
     
 ```
 
-#### setFileType() filter the applications for picking files while .setMimeTypes() files the actial files
+#### setFileType() filter the applications for picking files while .setMimeTypes() filter the actial files
 
 
 
