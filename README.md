@@ -63,7 +63,7 @@ Step 3: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
 ```
 
 ## Note:
-In rare cases u may get invalid files(files which do not exist but contain uri). To ensure to get valid files u can use conditions in ```onFilesChosen```. It is end-developer responsibility, how they want to handle such cases.
+1. In rare cases u may get invalid files(files which do not exist but contain uri). To ensure to get valid files u can use conditions in ```onFilesChosen```. It is end-developer responsibility, how they want to handle such cases.
 
 ```java
 public void onFilesChosen(List<ChosenFile> files) {
@@ -85,3 +85,8 @@ public void onFilesChosen(List<ChosenFile> files) {
                  */
             }
 ```
+
+2. When files choosen from Recent Directory. A duplicate file is created from same document id.
+
+The function should be called when u finished your job.
+eg. Lets say you want to use FilePicker for uploading files(any file). So after uploading is finished, to avoid duplicate files delete the duplicate files calling ```FileUtils.deleteDirectory()```
