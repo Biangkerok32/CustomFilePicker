@@ -20,14 +20,6 @@ public class StreamHelper {
     static final String TAG = StreamHelper.class.getSimpleName();
 
 
-    public static void closeSilent(Closeable stream) {
-        try {
-            close(stream);
-        } catch (PickerException e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
-    }
-
     public static void close(Closeable stream) throws PickerException {
         if (stream != null) {
             try {
@@ -48,11 +40,6 @@ public class StreamHelper {
         }
     }
 
-    public static void verifyCursor(Uri uri, Cursor cursor) throws PickerException {
-        if (cursor == null) {
-            throw new PickerException("Didnt not get cursor in return for = " + uri);
-        }
-    }
 
     public static void verifyStream(String path, ParcelFileDescriptor descriptor) throws PickerException {
         if (descriptor == null) {
@@ -64,24 +51,5 @@ public class StreamHelper {
         if (is == null) {
             throw new PickerException("Could not open stream to read path = " + path);
         }
-    }
-
-
-    public static boolean isNonNull(Bitmap bitmap) {
-        if (bitmap != null) {
-            return true;
-        }
-        Log.w(TAG, "Bitmap is null. No good.");
-        return false;
-    }
-
-    public static byte[] toByteArray(InputStream input) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024 * 4];
-        int n;
-        while (-1 != (n = input.read(buffer))) {
-            byteArrayOutputStream.write(buffer, 0, n);
-        }
-        return byteArrayOutputStream.toByteArray();
     }
 }

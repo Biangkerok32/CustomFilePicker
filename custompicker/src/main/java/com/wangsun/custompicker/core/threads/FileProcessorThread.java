@@ -63,16 +63,6 @@ public class FileProcessorThread extends Thread {
                     @Override
                     public void run() {
                         callback.onFilesChosen(files); //(List<ChosenFile>)
-//                        List<ChosenFile> tempFile = new ArrayList<>();
-//                        for(int i=0;i<files.size();i++){
-//                            if(files.get(i).isSuccess() && files.get(i).getSize()!=0){
-//                                tempFile.add(files.get(i));
-//                            }
-//                        }
-//                        if(!files.isEmpty()){
-//                            files = tempFile;
-//                            callback.onFilesChosen(files); //(List<ChosenFile>)
-//                        }
                     }
                 });
             }
@@ -362,10 +352,6 @@ public class FileProcessorThread extends Thread {
         return null;
     }
 
-    private boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
-
     private boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
@@ -406,12 +392,6 @@ public class FileProcessorThread extends Thread {
     protected String getTargetDirectory(String type) throws PickerException {
         String directory = null;
         switch (cacheLocation) {
-            case CacheLocation.EXTERNAL_STORAGE_PUBLIC_DIR:
-                directory = FileUtils.getExternalFilesDirectory(type, context);
-                break;
-            case CacheLocation.EXTERNAL_STORAGE_APP_DIR:
-                directory = FileUtils.getExternalFilesDir(type, context);
-                break;
             case CacheLocation.EXTERNAL_CACHE_DIR:
                 directory = FileUtils.getExternalCacheDir(context);
                 break;
@@ -419,10 +399,9 @@ public class FileProcessorThread extends Thread {
                 directory = FileUtils.getInternalFileDirectory(context);
                 break;
             default:
-                directory = FileUtils.getExternalFilesDirectory(type, context);
+                directory = FileUtils.getExternalCacheDir(context);
                 break;
         }
-
         return directory;
     }
 
@@ -453,11 +432,6 @@ public class FileProcessorThread extends Thread {
         file.setDisplayName(fileName);
 
         return getTargetDirectory(file.getDirectoryType()) + File.separator + fileName;
-    }
-
-
-    protected Activity getActivityFromContext() {
-        return (Activity) context;
     }
 
     public void setFilePickerCallback(FilePickerCallback callback) {

@@ -25,7 +25,7 @@ public abstract class PickerManager {
     protected final int pickerType;
     protected int requestId;
 
-    protected int cacheLocation = CacheLocation.EXTERNAL_STORAGE_PUBLIC_DIR;
+    protected int cacheLocation = CacheLocation.EXTERNAL_CACHE_DIR;
 
     protected Bundle extras;
 
@@ -34,39 +34,39 @@ public abstract class PickerManager {
     public PickerManager(Activity activity, int pickerType) {
         this.activity = activity;
         this.pickerType = pickerType;
-        initProperties();
+        //initProperties();
     }
 
     public PickerManager(Fragment fragment, int pickerType) {
         this.fragment = fragment;
         this.pickerType = pickerType;
-        initProperties();
+        //initProperties();
     }
 
     public PickerManager(android.app.Fragment appFragment, int pickerType) {
         this.appFragment = appFragment;
         this.pickerType = pickerType;
-        initProperties();
+        //initProperties();
     }
 
-    private void initProperties(){
-        debugglable = new StoragePreferences(getContext()).isDebuggable();
-    }
+//    private void initProperties(){
+//        debugglable = new StoragePreferences(getContext()).isDebuggable();
+//    }
 
 
 
-    /**
-     * Since {@link CacheLocation#EXTERNAL_STORAGE_PUBLIC_DIR} is deprecated, you will have no
-     * option to set the folder name now. If at all you need to copy the files into the public
-     * sotrage for exposing them to other applications, you will have to implement the
-     * copying/moving the files code yourself.
-     * @param folderName
-     */
-    @Deprecated
-    public void setFolderName(String folderName) {
-        StoragePreferences preferences = new StoragePreferences(getContext());
-        preferences.setFolderName(folderName);
-    }
+//    /**
+//     * Since {@link CacheLocation#EXTERNAL_STORAGE_PUBLIC_DIR} is deprecated, you will have no
+//     * option to set the folder name now. If at all you need to copy the files into the public
+//     * sotrage for exposing them to other applications, you will have to implement the
+//     * copying/moving the files code yourself.
+//     * @param folderName
+//     */
+//    @Deprecated
+//    public void setFolderName(String folderName) {
+//        StoragePreferences preferences = new StoragePreferences(getContext());
+//        preferences.setFolderName(folderName);
+//    }
 
     /**
      * Triggers pick image

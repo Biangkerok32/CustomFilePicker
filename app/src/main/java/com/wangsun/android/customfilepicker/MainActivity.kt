@@ -28,9 +28,11 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
         initButton()
     }
 
+    @SuppressLint("CheckResult")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == Picker.PICK_FILE){
             filePicker.submit(data)
+            println("data: $data")
         }
         else
             super.onActivityResult(requestCode, resultCode, data)
@@ -38,17 +40,14 @@ class MainActivity : AppCompatActivity(), FilePickerCallback {
 
     override fun onFilesChosen(files: MutableList<ChosenFile>?) {
         files?.let {
-            //println("result: ${it[0]}")
 
+            println("result: ${it[0]}")
+            println("success: ${it[0].isSuccess}")
             if(files.isNotEmpty()){
-                println("success: ${it[0].isSuccess}")
-
                 id_file_path.text = "Path: ${it[0].originalPath}"
                 id_mime_type.text = "MimeType from Uri: ${contentResolver.getType(Uri.parse(it[0].queryUri))}"
                 id_file_size.text = "File Size(in Bytes): ${it[0].size}"
             }
-
-
         }
     }
 

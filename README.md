@@ -25,11 +25,11 @@ Step 2: Add the dependency
 ```gradle
     dependencies {
         ...
-        implementation 'com.github.wangsun6:CustomFilePicker:1.0.4'
+        implementation 'com.github.wangsun6:CustomFilePicker:1.0.6'
     }
 ```
 
-Step 3: Declare and Initialize filepicker in Activity or Fragment.
+Step 3: Declare and Initialize filePicker in Activity or Fragment.
 
 ```java
     private FilePicker filePicker = new FilePicker(this);
@@ -87,7 +87,7 @@ public void onFilesChosen(List<ChosenFile> files) {
             }
 ```
 
-2. When files choosen from Recent Directory. A duplicate file is created from same document id. The ```FileUtils.deleteDirectory()``` function should be called when u finished your job(eg. after successfully uploading files) to avoid duplicate files.
+2. When files chosen from Recent Directory. A duplicate file is created from same document id. The ```FileUtils.deleteDirectory()``` function should be called when u finished your job(eg. after successfully uploading files) to avoid duplicate files.
 
 
 ## More examples:
@@ -152,7 +152,7 @@ public void onFilesChosen(List<ChosenFile> files) {
     
 ```
 
-#### setFileType() filter the applications for picking files while .setMimeTypes() filter the actial files
+#### setFileType() filter the applications for picking files while .setMimeTypes() filter the actual files
 
 
 
