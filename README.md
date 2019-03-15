@@ -75,7 +75,7 @@ public void onFilesChosen(List<ChosenFile> files) {
                     }
                 }
                 /**
-                 * finalFiles contains valid files:
+                 * finalFiles contains valid file data:
                  *
                  * finalFiles.get(i).getOriginalPath()
                  * finalFiles.get(i).getSize()
