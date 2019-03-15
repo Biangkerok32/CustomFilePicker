@@ -85,9 +85,6 @@ public void onFilesChosen(List<ChosenFile> files) {
             }
 ```
 
-2. When files chosen from Recent Directory. A duplicate file is created from same document id. The ```FileUtils.deleteDirectory()``` function should be called when u finished your job(eg. after successfully uploading files) to avoid duplicate files.
-
-
 ## More examples:
 
 ```Java
