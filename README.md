@@ -5,7 +5,7 @@
 A FilePicker library for Android for selecting multiple files.
 
 
-## Usage
+## Installation
 
 Step 1: Add it in your root build.gradle at the end of repositories
 
@@ -27,7 +27,9 @@ Step 2: Add the dependency
     }
 ```
 
-Step 3: Declare and Initialize filePicker in Activity or Fragment.
+## Usage
+
+Step 1: Declare and Initialize filePicker in Activity or Fragment.
 
 ```java
     private FilePicker filePicker = new FilePicker(this);
@@ -47,7 +49,7 @@ Step 3: Declare and Initialize filePicker in Activity or Fragment.
                 .pickFile();
 ```
 
-Step 4: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
+Step 2: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
 
 ```java
     @Override
