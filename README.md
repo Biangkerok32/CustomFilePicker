@@ -6,7 +6,7 @@ A FilePicker library for Android for selecting multiple files.
 
 
 ## Installation
-Step 21: Add the dependency
+Step 1: Add the dependency
 
 ```gradle
     dependencies {
