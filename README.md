@@ -1,35 +1,25 @@
 # CustomFilePicker Library for Android
 
-[![](https://jitpack.io/v/wangsun6/CustomFilePicker.svg)](https://jitpack.io/#wangsun6/CustomFilePicker)
+
 
 A FilePicker library for Android for selecting multiple files.
 
 
-## Usage
-
-Step 1: Add it in your root build.gradle at the end of repositories
-
-```gradle
-    allprojects {
-        repositories {
-            ...
-            maven { url 'https://jitpack.io' }
-        }
-    }
-```
-
-Step 2: Add the dependency
+## Installation
+Step 21: Add the dependency
 
 ```gradle
     dependencies {
         ...
-        implementation 'com.github.wangsun6:CustomFilePicker:1.0.6'
+        implementation 'com.wangsun.android:file-picker:1.0.6'
     }
 ```
 
-Step 3: Declare and Initialize filePicker in Activity or Fragment.
+## Usage
 
-```java
+Step 1: Declare and Initialize filePicker in Activity or Fragment.
+
+```
     private FilePicker filePicker = new FilePicker(this);
     filePicker.setFilePickerCallback(new FilePickerCallback() {
             @Override
@@ -47,9 +37,9 @@ Step 3: Declare and Initialize filePicker in Activity or Fragment.
                 .pickFile();
 ```
 
-Step 4: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
+Step 2: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
 
-```java
+```
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode == Activity.RESULT_OK && requestCode == Picker.PICK_FILE){
@@ -63,7 +53,7 @@ Step 4: call ```filePicker.submit(data)``` in ```onActivityResult(...)```.
 ## Note:
 1. In rare cases u may get invalid files(files which do not exist but contain uri). To ensure to get valid files u can use conditions in ```onFilesChosen```. It is end-developer responsibility, how they want to handle such cases.
 
-```java
+```
 public void onFilesChosen(List<ChosenFile> files) {
                 //filter files
                 List<ChosenFile> finalFiles = new ArrayList<>();
@@ -87,7 +77,7 @@ public void onFilesChosen(List<ChosenFile> files) {
 
 ## More examples:
 
-```Java
+```
 
     /************************************
      *  Pick particular type of file

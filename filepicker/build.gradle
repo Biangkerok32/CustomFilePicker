@@ -1,0 +1,70 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+    }
+}
+
+
+ext {
+    bintrayRepo = 'android-file-picker'
+    bintrayName = 'com.wangsun.android.filepicker'
+
+    publishedGroupId = 'com.wangsun.android'
+    libraryName = 'Android File Picker'
+    artifact = 'file-picker'
+
+    libraryDescription = 'Android Library for selecting images from local storage'
+
+    siteUrl = 'https://github.com/wangsun6/CustomFilePicker'
+    gitUrl = 'https://github.com/wangsun6/CustomFilePicker.git'
+
+    libraryVersionCode = 2
+    libraryVersion = '1.0.2'
+
+    developerId = 'wangsun6'
+    developerName = 'Wangsun Hakhun'
+    developerEmail = 'wangsunhakhun@gmail.com'
+
+    licenseName = 'MIT License'
+    licenseUrl = 'https://github.com/wangsun6/CustomFilePicker/blob/master/LICENSE'
+    allLicenses = ["MIT"]
+}
+
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 6
+        versionName "1.0.6"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation 'junit:junit:4.12'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+}
+repositories {
+    mavenCentral()
+}
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

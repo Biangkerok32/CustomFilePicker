@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
     <TextView
         android:layout_marginTop="10dp"
@@ -138,5 +137,11 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <!--<ImageView-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:id="@+id/id_image"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"/>-->
 
 </LinearLayout>
